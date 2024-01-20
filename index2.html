@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Page with Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1em;
+    }
+
+    .product-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .product-info {
+      margin-top: 20px;
+    }
+
+    .price {
+      font-size: 1.2em;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    #quantity {
+      width: 60px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #cart {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    #cart-icon {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+
+    #cart-count {
+      font-size: 1.2em;
+    }
+
+    /* Context Menu Styling */
+    .context-menu {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Product Page with Cart</h1>
+  </header>
+
+  <div class="product-container" oncontextmenu="showContextMenu(event)">
+    <img src="C:\Users\LENOVO\Desktop\shopping cart\baby_bag.jpg" alt="Product Image" class="product-image">
+    <div class="product-info">
+      <h2>Product Name</h2>
+      <p class="price">$19.99</p>
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" value="1" min="1">
+      <button onclick="addToCart()">Add to Cart</button>
+    </div>
+  </div>
+
+  <div id="cart" oncontextmenu="showContextMenu(event)">
+    <i id="cart-icon" class="fa fa-shopping-cart"></i>
+    <span id="cart-count">0</span>
+  </div>
+
+  <!-- Context Menu HTML -->
+  <div id="context-menu" class="context-menu">
+    <p><a href="#" onclick="clearCart()">Clear Cart</a></p>
+  </div>
+
+  <script>
+    // Function to add product to the cart
+    function addToCart() {
+      // Get quantity and convert it to a number
+      var quantity = parseInt(document.getElementById('quantity').value, 10);
+
+      // Retrieve the current cart count from local storage or set it to 0
+      var cartCount = parseInt(localStorage.getItem('cartCount')) || 0;
+
+      // Update the cart count in local storage
+      localStorage.setItem('cartCount', cartCount + quantity);
+
+      // Update the cart count in the UI
+      updateCartCount();
+    }
+
+    // Function to update the cart count in the UI
+    function updateCartCount() {
+      var cartCount = parseInt(localStorage.getItem('cartCount')) || 0;
+      document.getElementById('cart-count').innerText = cartCount;
+    }
+
+    // Function to show the context menu
+    function showContextMenu(event) {
+      event.preventDefault();
+
+      var contextMenu = document.getElementById('context-menu');
+      contextMenu.style.left = event.clientX + 'px';
+      contextMenu.style.top = event.clientY + 'px';
+      contextMenu.style.display = 'block';
+    }
+
+    // Function to clear the cart
+    function clearCart() {
+      localStorage.removeItem('cartCount');
+      updateCartCount();
+
+      // Hide the context menu
+      document.getElementById('context-menu').style.display = 'none';
+    }
+
+    // Update cart count on page load
+    updateCartCount();
+
+    // Hide context menu on click outside
+    document.addEventListener('click', function(event) {
+      document.getElementById('context-menu').style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>
